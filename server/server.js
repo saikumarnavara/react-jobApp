@@ -8,10 +8,10 @@ mongoose.connect('mongodb+srv://sai1342:04121998%40Dob@cluster0.woilnkh.mongodb.
 
 const getEmp = require('./routes/getEmp')
 const addEmp = require('./routes/addEmp')
-
+const delEmp = require('./routes/delEmp')
 app.use('/getemployees', getEmp)
 app.use('/addemployees', addEmp)
-
+app.use('/', delEmp)
 app.listen(port, () => {
     console.log('Server is running on port :', port)
 })
