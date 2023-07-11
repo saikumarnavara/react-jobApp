@@ -4,10 +4,9 @@ import { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import { addEmpDetails } from '../../service/apiUrls'
-import { api } from '../../service/apiService'
+import { addEmpDetails } from '../../service/apiUrls';
+import axios from 'axios';
 const Landing = () => {
-
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -18,33 +17,39 @@ const Landing = () => {
     const [doj, setDoj] = useState('')
     const [address, setAddress] = useState('')
     const [phone, setPhone] = useState('')
+    const payload = {
+        "EmpId": empId,
+        "Name": name,
+        "Designation": desig,
+        "doj": doj,
+        "address": address,
+        "phone": phone
+    }
+
     const addEmp = () => {
-        const payload = {
-            EmpId: empId,
-            Name: name,
-            Designation: desig,
-            doj: doj,
-            address: address,
-            phone: phone,
+        try {
+            axios.post(addEmpDetails.url, payload)
+        } catch (err) {
+            console.log(err.message)
         }
-        api(addEmpDetails.url, addEmpDetails.reqType, payload)
     }
     const OnsubmitHandler = (e) => {
         addEmp()
-        const data = [{
-            emp: empId,
-            name: name,
-            designation: desig,
-            doj: doj,
-            phone: phone
-        }]
-        console.log(data)
         setShow(false)
-
+        setEmpId('')
+        setAddress('')
+        setDesig('')
+        setDoj('')
+        setPhone('')
+        setName('')
     }
+
+
 
     return (
         <div>
+
+
             <Button variant="primary" onClick={handleShow}>
                 Add Employees
             </Button>
@@ -61,7 +66,7 @@ const Landing = () => {
                                 placeholder="Emp Id"
                                 aria-label="Username"
                                 aria-describedby="basic-addon1"
-                            />
+                                required />
                         </InputGroup>
                         <InputGroup className="mb-3" value={name} onChange={(e) => { setName(e.target.value) }}>
                             <InputGroup.Text id="basic-addon1">Name</InputGroup.Text>
@@ -106,7 +111,7 @@ const Landing = () => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={OnsubmitHandler}>
+                    <Button variant="primary" type='submit' onClick={OnsubmitHandler}>
                         Add Employee
                     </Button>
                 </Modal.Footer>

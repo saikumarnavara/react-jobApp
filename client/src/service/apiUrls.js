@@ -9,6 +9,6 @@ export const addEmpDetails = {
 }
 
 export const deleteEmp = {
-    url: 'http://localhost:4001/deleteemployees',
+    url: 'http://localhost:4001/deleteemployees/',
     reqType: 'DELETE'
 }
