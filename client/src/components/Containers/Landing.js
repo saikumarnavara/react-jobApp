@@ -60,7 +60,7 @@ const Landing = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <InputGroup className="mb-3" value={empId} onChange={(e) => { setEmpId(e.target.value) }}>
+                        <InputGroup className="mb-3" type='number' value={empId} onChange={(e) => { setEmpId(e.target.value) }}>
                             <InputGroup.Text id="basic-addon1">Emp Id</InputGroup.Text>
                             <Form.Control
                                 placeholder="Emp Id"
@@ -92,7 +92,7 @@ const Landing = () => {
                                 aria-describedby="basic-addon1"
                             />
                         </InputGroup>
-                        <InputGroup className="mb-3" value={phone} onChange={(e) => { setPhone(e.target.value) }}>
+                        <InputGroup className="mb-3" type='number' value={phone} onChange={(e) => { setPhone(e.target.value) }}>
                             <InputGroup.Text id="basic-addon1">Phone</InputGroup.Text>
                             <Form.Control
                                 placeholder="Enter Moble Number"

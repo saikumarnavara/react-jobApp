@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { deleteEmp } from '../../service/apiUrls'
+import { deleteEmp } from '../../service/apiUrls';
 export const DeleteEmp = (id) => {
     try {
         axios.delete(deleteEmp.url + `/${id}`)

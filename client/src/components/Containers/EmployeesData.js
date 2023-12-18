@@ -1,33 +1,41 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import { deleteEmp, getEmpDetails } from '../../service/apiUrls';
 import { DeleteEmp } from './DeleteEmp';
 import Table from 'react-bootstrap/Table';
 import { AiFillDelete } from "react-icons/ai";
-
-const EmployeesData = () => {
+import { useDispatch } from 'react-redux';
+import { getEmpDetailApi } from '../../redux/slices/getEmpSlice'
+const EmployeesData = ({ data, status }) => {
+    const dispatch = useDispatch()
     const [empData, setEmpData] = useState([])
     const [loading, setLoading] = useState(false)
-    const getEmp = async () => {
-        try {
-            const response = await axios.get(getEmpDetails.url)
-            // const finalData = await response.json();
-            setEmpData(response.data)
-            setLoading(true)
-        } catch (err) {
-            console.log(err)
-            setLoading(false)
-        }
-    }
-    useEffect(() => {
-        getEmp()
-    }, [empData])
 
-    if (!loading) {
+    useEffect(() => {
+        setLoading(status)
+        setEmpData(data)
+    }, [data])
+
+    if (loading === 'loading') {
         return (
             <center><p>Loading...</p></center>
         )
     }
+    else if (loading === 'failed') {
+        return (
+            <center><p>Failed to load data</p></center>
+        )
+    }
+
+    async function deleteHandler(id) {
+        try {
+            await DeleteEmp(id)
+            dispatch(getEmpDetailApi())
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+
+
 
     return (
         <div className='container'>
@@ -52,7 +60,7 @@ const EmployeesData = () => {
                                         <td>{item.Designation}</td>
                                         <td>{item.doj}</td>
                                         <td>{item.phone}</td>
-                                        <h4 onClick={() => { DeleteEmp(item._id) }}><AiFillDelete /></h4>
+                                        <h4 onClick={() => { deleteHandler(item._id) }}><AiFillDelete /></h4>
                                     </tr>
                                 </>
                             )
