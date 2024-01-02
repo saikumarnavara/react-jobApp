@@ -1,18 +1,46 @@
 import React, { useEffect, useState } from 'react'
-import { DeleteEmp } from './DeleteEmp';
 import Table from 'react-bootstrap/Table';
+import axios from 'axios'
 import { AiFillDelete } from "react-icons/ai";
-import { useDispatch } from 'react-redux';
-import { getEmpDetailApi } from '../../redux/slices/getEmpSlice'
-const EmployeesData = ({ data, status }) => {
+import { useDispatch, useSelector } from 'react-redux';
+import { getEmpDetailApi } from '../../redux/slices/getEmpSlice';
+import { deleteEmp } from '../../service/apiUrls';
+const EmployeesData = () => {
+
     const dispatch = useDispatch()
     const [empData, setEmpData] = useState([])
     const [loading, setLoading] = useState(false)
 
+    const users = useSelector(state => state.getEmployees)
+
+
     useEffect(() => {
-        setLoading(status)
-        setEmpData(data)
-    }, [data])
+        dispatch(getEmpDetailApi())
+    }, [])
+
+    useEffect(() => {
+        setEmpData(users.emp)
+        setLoading(users.status)
+    }, [users])
+
+    function deleteUser(id) {
+        try {
+            axios.delete(deleteEmp.url + `/${id}`)
+                .then((res) => {
+                    dispatch(getEmpDetailApi())
+                    console.log(res)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+
+
 
     if (loading === 'loading') {
         return (
@@ -24,17 +52,6 @@ const EmployeesData = ({ data, status }) => {
             <center><p>Failed to load data</p></center>
         )
     }
-
-    async function deleteHandler(id) {
-        try {
-            await DeleteEmp(id)
-            dispatch(getEmpDetailApi())
-        } catch (err) {
-            console.log(err)
-        }
-    }
-
-
 
 
     return (
@@ -60,7 +77,7 @@ const EmployeesData = ({ data, status }) => {
                                         <td>{item.Designation}</td>
                                         <td>{item.doj}</td>
                                         <td>{item.phone}</td>
-                                        <h4 onClick={() => { deleteHandler(item._id) }}><AiFillDelete /></h4>
+                                        <h4 onClick={() => { deleteUser(item._id) }}><AiFillDelete /></h4>
                                     </tr>
                                 </>
                             )

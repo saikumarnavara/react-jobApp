@@ -5,8 +5,11 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { addEmpDetails } from '../../service/apiUrls';
+import { getEmpDetailApi } from '../../redux/slices/getEmpSlice';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 const Landing = () => {
+    const dispatch = useDispatch()
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -29,6 +32,13 @@ const Landing = () => {
     const addEmp = () => {
         try {
             axios.post(addEmpDetails.url, payload)
+                .then((res) => {
+                    dispatch(getEmpDetailApi())
+                    console.log(res)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
         } catch (err) {
             console.log(err.message)
         }
@@ -42,6 +52,7 @@ const Landing = () => {
         setDoj('')
         setPhone('')
         setName('')
+
     }
 
 

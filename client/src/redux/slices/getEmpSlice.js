@@ -1,27 +1,22 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { getEmpDetails } from "../../service/apiUrls";
-import { createAsyncThunk } from "@reduxjs/toolkit";
 const initialState = {
     emp: [],
     status: null,
 };
 
-// async function getEmpDetailApi() {
-//     try {
-//         const response = await axios.get(getEmpDetails.url);
-//         return response.data;
-//     } catch (err) {
-//         console.log(err);
-//     }
-// }
-
 export const getEmpDetailApi = createAsyncThunk(
-    "getEmpDetailApi",
-    async () => {
-        const response = await axios.get(getEmpDetails.url);
-        return response.data;
+    "getEmpDetailApi", async () => {
+        try {
+            const response = await axios.get(getEmpDetails.url);
+            return response.data;
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
+
 );
 
 
@@ -34,21 +29,21 @@ const getEmpSlice = createSlice({
             state.status = "success";
         }
     },
-    extraReducers: {
-        [getEmpDetailApi.pending]: (state, action) => {
+    extraReducers: (builder) => {
+        builder.addCase(getEmpDetailApi.pending, (state) => {
             state.status = "loading";
-        }
-        ,
-        [getEmpDetailApi.fulfilled]: (state, action) => {
-            state.emp = action.payload;
-            state.status = "success";
-        }
-        ,
-        [getEmpDetailApi.rejected]: (state, action) => {
-            state.status = "failed";
-        }
+        })
+            .addCase(getEmpDetailApi.fulfilled, (state, action) => {
+                state.emp = action.payload;
+                state.status = "success";
+            })
+            .addCase(getEmpDetailApi.rejected, (state) => {
+                state.status = "failed";
+            })
     }
+
 });
+
 
 export const { getEmpSuccess } = getEmpSlice.actions;
 export default getEmpSlice.reducer;
