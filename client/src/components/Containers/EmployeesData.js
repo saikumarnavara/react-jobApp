@@ -5,18 +5,19 @@ import { AiFillDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from 'react-redux';
 import { getEmpDetailApi } from '../../redux/slices/getEmpSlice';
 import { deleteEmp } from '../../service/apiUrls';
+import EmpDetailedView from './empDetailedView';
 const EmployeesData = () => {
-
     const dispatch = useDispatch()
     const [empData, setEmpData] = useState([])
     const [loading, setLoading] = useState(false)
+    const [showDetailedView, setShowDetailedView] = useState(false);
+    const [empInfo, setEmpInfo] = useState([])
 
     const users = useSelector(state => state.getEmployees)
 
-
     useEffect(() => {
         dispatch(getEmpDetailApi())
-    }, [])
+    }, [dispatch])
 
     useEffect(() => {
         setEmpData(users.emp)
@@ -39,7 +40,11 @@ const EmployeesData = () => {
         }
     }
 
+    const handleDetailedView = (arg) => {
+        setShowDetailedView(!showDetailedView)
+        setEmpInfo(arg)
 
+    }
 
 
     if (loading === 'loading') {
@@ -54,8 +59,10 @@ const EmployeesData = () => {
     }
 
 
+
     return (
         <div className='container'>
+            {showDetailedView && <EmpDetailedView data={empInfo} close={handleDetailedView} />}
             <Table striped bordered hover>
                 <thead>
                     <tr>
@@ -69,9 +76,11 @@ const EmployeesData = () => {
                 <tbody>
                     {
                         empData.map((item) => {
+
                             return (
                                 <>
-                                    <tr key={item._id}>
+
+                                    <tr key={item._id} onClick={() => { handleDetailedView(item) }}>
                                         <td>{item.EmpId}</td>
                                         <td>{item.Name}</td>
                                         <td>{item.Designation}</td>

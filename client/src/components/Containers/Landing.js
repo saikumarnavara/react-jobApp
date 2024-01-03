@@ -14,19 +14,23 @@ const Landing = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const [empId, setEmpId] = useState('')
-    const [name, setName] = useState('')
-    const [desig, setDesig] = useState('')
-    const [doj, setDoj] = useState('')
-    const [address, setAddress] = useState('')
-    const [phone, setPhone] = useState('')
+    const [employeDetails, setEmployeDetails] = useState({
+        empId: '',
+        name: '',
+        desig: '',
+        doj: '',
+        phone: '',
+        address: ''
+    })
+
+
     const payload = {
-        "EmpId": empId,
-        "Name": name,
-        "Designation": desig,
-        "doj": doj,
-        "address": address,
-        "phone": phone
+        "EmpId": employeDetails.empId,
+        "Name": employeDetails.name,
+        "Designation": employeDetails.desig,
+        "doj": employeDetails.doj,
+        "address": employeDetails.address,
+        "phone": employeDetails.phone
     }
 
     const addEmp = () => {
@@ -46,21 +50,20 @@ const Landing = () => {
     const OnsubmitHandler = (e) => {
         addEmp()
         setShow(false)
-        setEmpId('')
-        setAddress('')
-        setDesig('')
-        setDoj('')
-        setPhone('')
-        setName('')
-
+        setEmployeDetails({
+            empId: '',
+            name: '',
+            desig: '',
+            doj: '',
+            phone: '',
+            address: ''
+        })
     }
 
 
 
     return (
         <div>
-
-
             <Button variant="primary" onClick={handleShow}>
                 Add Employees
             </Button>
@@ -71,7 +74,7 @@ const Landing = () => {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <InputGroup className="mb-3" type='number' value={empId} onChange={(e) => { setEmpId(e.target.value) }}>
+                        <InputGroup className="mb-3" type='number' value={employeDetails.empId} onChange={(e) => { setEmployeDetails(prevState => ({ ...prevState, empId: e.target.value })) }}>
                             <InputGroup.Text id="basic-addon1">Emp Id</InputGroup.Text>
                             <Form.Control
                                 placeholder="Emp Id"
@@ -79,7 +82,7 @@ const Landing = () => {
                                 aria-describedby="basic-addon1"
                                 required />
                         </InputGroup>
-                        <InputGroup className="mb-3" value={name} onChange={(e) => { setName(e.target.value) }}>
+                        <InputGroup className="mb-3" value={employeDetails.name} onChange={(e) => { setEmployeDetails(prevState => ({ ...prevState, name: e.target.value })) }}>
                             <InputGroup.Text id="basic-addon1">Name</InputGroup.Text>
                             <Form.Control
                                 placeholder="Name"
@@ -87,7 +90,7 @@ const Landing = () => {
                                 aria-describedby="basic-addon1"
                             />
                         </InputGroup>
-                        <InputGroup className="mb-3" value={desig} onChange={(e) => { setDesig(e.target.value) }}>
+                        <InputGroup className="mb-3" value={employeDetails.desig} onChange={(e) => { setEmployeDetails(prevState => ({ ...prevState, desig: e.target.value })) }}>
                             <InputGroup.Text id="basic-addon1">Designation</InputGroup.Text>
                             <Form.Control
                                 placeholder="Designation"
@@ -95,7 +98,7 @@ const Landing = () => {
                                 aria-describedby="basic-addon1"
                             />
                         </InputGroup>
-                        <InputGroup className="mb-3" value={doj} onChange={(e) => { setDoj(e.target.value) }}>
+                        <InputGroup className="mb-3" value={employeDetails.doj} onChange={(e) => { setEmployeDetails(prevState => ({ ...prevState, doj: e.target.value })) }}>
                             <InputGroup.Text id="basic-addon1">DOJ</InputGroup.Text>
                             <Form.Control
                                 placeholder="Date of join"
@@ -103,7 +106,7 @@ const Landing = () => {
                                 aria-describedby="basic-addon1"
                             />
                         </InputGroup>
-                        <InputGroup className="mb-3" type='number' value={phone} onChange={(e) => { setPhone(e.target.value) }}>
+                        <InputGroup className="mb-3" type='number' value={employeDetails.phone} onChange={(e) => { setEmployeDetails(prevState => ({ ...prevState, phone: e.target.value })) }}>
                             <InputGroup.Text id="basic-addon1">Phone</InputGroup.Text>
                             <Form.Control
                                 placeholder="Enter Moble Number"
@@ -112,7 +115,7 @@ const Landing = () => {
                             />
                         </InputGroup>
 
-                        <InputGroup className="mb-3" value={address} onChange={(e) => { setAddress(e.target.value) }}>
+                        <InputGroup className="mb-3" value={employeDetails.address} onChange={(e) => { setEmployeDetails(prevState => ({ ...prevState, address: e.target.value })) }}>
                             <InputGroup.Text>With textarea</InputGroup.Text>
                             <Form.Control as="textarea" aria-label="With textarea" />
                         </InputGroup>
