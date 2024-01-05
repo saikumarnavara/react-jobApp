@@ -6,8 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getEmpDetailApi } from '../../redux/slices/getEmpSlice';
 import { deleteEmp } from '../../service/apiUrls';
 import EmpDetailedView from './empDetailedView';
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 const EmployeesData = () => {
     const dispatch = useDispatch()
+    const Navigate = useNavigate()
     const [empData, setEmpData] = useState([])
     const [loading, setLoading] = useState(false)
     const [showDetailedView, setShowDetailedView] = useState(false);
@@ -58,7 +61,15 @@ const EmployeesData = () => {
         )
     }
 
+    const handleLogout = () => {
+        Cookies.remove('token')
+        Navigate('/')
+    }
 
+    const token = Cookies.get('token')
+    if (!token) {
+        Navigate('/')
+    }
 
     return (
         <div className='container'>
@@ -94,6 +105,9 @@ const EmployeesData = () => {
                     }
                 </tbody>
             </Table>
+            <div>
+                <button className='btn btn-primary' onClick={() => { handleLogout() }}>Logout</button>
+            </div>
         </div>
     )
 }
